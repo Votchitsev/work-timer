@@ -8,7 +8,7 @@ class Timer {
   constructor(timerEl) {
     this.timerEl = timerEl;
     this.getCurrentTime();
-    this.timerEl.textContent = this.renderTime();
+    this.renderTime();
 
     this.stop = this.stop.bind(this);
   }
@@ -20,13 +20,15 @@ class Timer {
       this.hour = data.hour;
       this.min = data.min;
       this.sec = data.sec;
+    } else {
+      this.setStartTime();
     }
   }
 
   start() {
     this.timer = setInterval(() => {
       this.tick();
-      this.timerEl.textContent = this.renderTime();
+      this.renderTime();
     }, 1000);
   }
 
@@ -48,7 +50,7 @@ class Timer {
   }
 
   renderTime() {
-    return `${this.hour > 9 ? this.hour : `0${this.hour}`}:${
+    this.timerEl.textContent = `${this.hour > 9 ? this.hour : `0${this.hour}`}:${
       this.min > 9 ? this.min : `0${this.min}`}:${
       this.sec > 9 ? this.sec : `0${this.sec}`}`;
   }
@@ -61,6 +63,18 @@ class Timer {
     };
 
     Storage.save(data);
+  }
+
+  reset() {
+    this.setStartTime();
+    this.renderTime();
+    Storage.clear();
+  }
+
+  setStartTime() {
+    this.hour = 0;
+    this.min = 0;
+    this.sec = 0;
   }
 }
 

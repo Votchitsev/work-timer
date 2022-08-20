@@ -30,6 +30,18 @@
   display: block;
 }
 
+.reset {
+  background-color: #FF0000;
+}
+
 .stop {
   background-color: #FF0000;
+}
+
+.reset:hover {
+  background-color: #c80000;
+}
+
+.stop:hover {
+  background-color: #c80000;
 }

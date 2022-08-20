@@ -9,11 +9,15 @@ class Clock {
     this.timer = timer;
     this.run = this.run.bind(this);
     this.stop = this.stop.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   setEventListeners() {
     const startBtn = this.element.querySelector('.start');
     startBtn.addEventListener('click', this.run);
+
+    const resetBtn = this.element.querySelector('.reset');
+    resetBtn.addEventListener('click', this.reset);
   }
 
   static changeEventListener(element, callback, previousCallback, event) {
@@ -23,9 +27,6 @@ class Clock {
 
   run() {
     this.timer.start();
-
-    const pauseBtn = this.element.querySelector('.pause');
-    pauseBtn.classList.add('active');
 
     const startBtn = this.element.querySelector('.start');
     startBtn.classList.remove('start');
@@ -44,6 +45,10 @@ class Clock {
     stopBtn.textContent = 'start';
 
     Clock.changeEventListener(stopBtn, this.run, this.stop, 'click');
+  }
+
+  reset() {
+    this.timer.reset();
   }
 }
 
