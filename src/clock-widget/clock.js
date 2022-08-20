@@ -1,8 +1,3 @@
-/* @class Clock
-* @param { Object } HTMLDivElement
-* @param { Object } Timer
-*/
-
 class Clock {
   constructor(element, timer) {
     this.element = element;
@@ -18,6 +13,8 @@ class Clock {
 
     const resetBtn = this.element.querySelector('.reset');
     resetBtn.addEventListener('click', this.reset);
+
+    window.addEventListener('beforeunload', this.stop);
   }
 
   static changeEventListener(element, callback, previousCallback, event) {

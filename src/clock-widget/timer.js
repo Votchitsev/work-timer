@@ -1,7 +1,3 @@
-/* Class Timer
-* @param { object } HTMLDivElement
-*/
-
 import Storage from '../storage/Storage';
 
 class Timer {
