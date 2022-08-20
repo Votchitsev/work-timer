@@ -1,15 +1,14 @@
-/* Класс описывает поведение часов и имеет следующие методы:
- * run - запускает часы;
- * draw - добавляет часы на страницу
- * stop - останавливает часы
- */
-
-import Timer from './timer';
+/* @class Clock
+* @param { Object } HTMLDivElement
+* @param { Object } Timer
+*/
 
 class Clock {
-  constructor(element) {
+  constructor(element, timer) {
     this.element = element;
+    this.timer = timer;
     this.run = this.run.bind(this);
+    this.stop = this.stop.bind(this);
   }
 
   setEventListeners() {
@@ -17,11 +16,34 @@ class Clock {
     startBtn.addEventListener('click', this.run);
   }
 
+  static changeEventListener(element, callback, previousCallback, event) {
+    element.removeEventListener(event, previousCallback);
+    element.addEventListener(event, callback);
+  }
+
   run() {
-    this.timer = new Timer(document.querySelector('.clock'), 0);
-    this.timer.start(0);
+    this.timer.start();
+
     const pauseBtn = this.element.querySelector('.pause');
     pauseBtn.classList.add('active');
+
+    const startBtn = this.element.querySelector('.start');
+    startBtn.classList.remove('start');
+    startBtn.classList.add('stop');
+    startBtn.textContent = 'stop';
+
+    Clock.changeEventListener(startBtn, this.stop, this.run, 'click');
+  }
+
+  stop() {
+    this.timer.stop();
+
+    const stopBtn = this.element.querySelector('.stop');
+    stopBtn.classList.remove('stop');
+    stopBtn.classList.add('start');
+    stopBtn.textContent = 'start';
+
+    Clock.changeEventListener(stopBtn, this.run, this.stop, 'click');
   }
 }
 

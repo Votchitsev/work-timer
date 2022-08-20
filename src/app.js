@@ -1,4 +1,7 @@
 import Clock from './clock-widget/clock';
+import Timer from './clock-widget/timer';
 
-const clock = new Clock(document.querySelector('.clock-container'));
+const timer = new Timer(document.querySelector('.clock'));
+
+const clock = new Clock(document.querySelector('.clock-container'), timer);
 clock.setEventListeners();

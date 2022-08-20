@@ -29,3 +29,7 @@
 .active {
   display: block;
 }
+
+.stop {
+  background-color: #FF0000;
+}
