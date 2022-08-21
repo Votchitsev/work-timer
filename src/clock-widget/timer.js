@@ -13,49 +13,58 @@ class Timer {
     const data = Storage.load();
 
     if (data) {
-      this.hour = data.hour;
-      this.min = data.min;
-      this.sec = data.sec;
+      this.time = data.time;
     } else {
       this.setStartTime();
     }
   }
 
   start() {
+    const start = Date.now();
     this.timer = setInterval(() => {
-      this.tick();
-      this.renderTime();
+      this.tick(start);
+      this.renderTime(this.delta + this.time);
     }, 1000);
   }
 
-  tick() {
-    this.sec += 1;
-    if (this.sec >= 60) {
-      this.sec = 0;
-      this.min += 1;
-      if (this.min >= 60) {
-        this.min = 0;
-        this.hour += 1;
-      }
-    }
+  tick(start) {
+    const delta = (Date.now() - start) / 1000;
+    this.delta = delta;
   }
 
   stop() {
     clearInterval(this.timer);
+    this.time += this.delta;
     this.save();
   }
 
-  renderTime() {
-    this.timerEl.textContent = `${this.hour > 9 ? this.hour : `0${this.hour}`}:${
-      this.min > 9 ? this.min : `0${this.min}`}:${
-      this.sec > 9 ? this.sec : `0${this.sec}`}`;
+  renderTime(time = 0) {
+    let hours;
+    let minutes;
+    let seconds;
+
+    if (time < 60) {
+      hours = 0;
+      minutes = 0;
+      seconds = parseInt(time, 10);
+    } else if (time >= 60 && time < 3600) {
+      hours = 0;
+      minutes = parseInt(time / 60, 10);
+      seconds = parseInt(time % 60, 10);
+    } else if (time >= 3600) {
+      hours = parseInt(time / 3600, 10);
+      minutes = parseInt((time % 3600) / 60, 10);
+      seconds = parseInt((time % 3600) % 60, 10);
+    }
+
+    this.timerEl.textContent = `${hours > 9 ? hours : `0${hours}`}:${
+      minutes > 9 ? minutes : `0${minutes}`}:${
+      seconds > 9 ? seconds : `0${seconds}`}`;
   }
 
   save() {
     const data = {
-      hour: this.hour,
-      min: this.min,
-      sec: this.sec,
+      time: this.time,
     };
 
     Storage.save(data);
@@ -68,9 +77,7 @@ class Timer {
   }
 
   setStartTime() {
-    this.hour = 0;
-    this.min = 0;
-    this.sec = 0;
+    this.time = 0;
   }
 }
 
