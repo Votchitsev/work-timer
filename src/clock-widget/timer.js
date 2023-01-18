@@ -5,7 +5,7 @@ class Timer {
     this.timerEl = timerEl;
     this.getCurrentTime();
     this.renderTime();
-
+    this.isRunning = false;
     this.stop = this.stop.bind(this);
   }
 
@@ -20,6 +20,7 @@ class Timer {
   }
 
   start() {
+    this.isRunning = true;
     const start = Date.now();
     this.timer = setInterval(() => {
       this.tick(start);
@@ -33,9 +34,12 @@ class Timer {
   }
 
   stop() {
-    clearInterval(this.timer);
-    this.time += this.delta;
-    this.save();
+    if (this.isRunning) {
+      this.isRunning = false;
+      clearInterval(this.timer);
+      this.time += this.delta;
+      this.save();
+    }
   }
 
   renderTime(time = 0) {

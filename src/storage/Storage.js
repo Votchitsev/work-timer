@@ -13,7 +13,7 @@ class Storage {
   }
 
   static clear() {
-    localStorage.clear();
+    localStorage.removeItem('currentTime');
   }
 }
 
